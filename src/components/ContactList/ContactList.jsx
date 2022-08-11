@@ -1,32 +1,25 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from "prop-types";
+import SingleContact from './SingleContact';
 
-export class ContactList extends Component {
-  static defaultProps = {
-    contacts: [],
-    deleteContact: () => { }
-  };
-
-  static propTypes = {
-    contacts: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })),
-    deleteContact: PropTypes.func,
-  };
-
-  render() {
-    const { contacts, deleteContact } = this.props;
-
-    return (
-      <ul>
-        {contacts.map(el => {
-          return <li key={el.id}>{el.name + ' ' + el.number} <button value={el.id} onClick={deleteContact}>Delete</button></li>
-        })}
-      </ul>
-    )
-  }
+const ContactList = ({ contacts = [], deleteContact }) => {
+  return (
+    <ul>
+      {contacts.map(el => {
+        const {name = '', number = '', id = ''} = el || {};
+        return <SingleContact key={id} name={name} number={number} deleteContact={deleteContact} id={id} />
+      })}
+    </ul>
+  )
 }
+
+ContactList.propTypes = {
+  contacts: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    number: PropTypes.string.isRequired,
+  })).isRequired,
+  deleteContact: PropTypes.func.isRequired,
+};
 
 export default ContactList
